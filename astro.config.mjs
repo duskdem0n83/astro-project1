@@ -8,7 +8,7 @@ import rehypePrettyCode from 'rehype-pretty-code';
 export default defineConfig({
   site: process.env.VERCEL_URL 
     ? `https://${process.env.VERCEL_URL}` 
-    : process.env.PUBLIC_SITE_URL || 'https://astro-project1.vercel.app',
+    : process.env.PUBLIC_SITE_URL || 'https://astro-project1-n4y83kdau-dans-projects-c61e2af5.vercel.app',
   integrations: [
     tailwind({
       applyBaseStyles: false,
