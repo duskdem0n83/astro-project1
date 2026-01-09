@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BlogPost from '../../../components/BlogPost.astro';
+import TagList from '../../../components/TagList.astro';
+import { getPosts, getAllTags, getPostsByTag } from '../../../utils/getPosts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const tags = getAllTags(posts);
+  return tags.map((tag) => ({
+    params: { tag },
+    props: { tag, posts: posts.filter((post) => post.data.tags.includes(tag)) },
+  }));
+}
+
+interface Props {
+  tag: string;
+  posts: Awaited<ReturnType<typeof getPostsByTag>>;
+}
+
+const { tag, posts } = Astro.props;
+const allPosts = await getPosts();
+const allTags = getAllTags(allPosts);
+---
+
+<BaseLayout title={`Posts tagged "${tag}"`} description={`All blog posts tagged with ${tag}`}>
+  <div class="container mx-auto px-4 py-8">
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+        Posts tagged: <span class="text-blue-600 dark:text-blue-400">{tag}</span>
+      </h1>
+      <p class="text-slate-600 dark:text-slate-400">
+        {posts.length} {posts.length === 1 ? 'post' : 'posts'} found
+      </p>
+    </header>
+
+    <TagList tags={allTags} currentTag={tag} />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {posts.map((post) => (
+        <BlogPost post={post} />
+      ))}
+    </div>
+
+    {posts.length === 0 && (
+      <div class="text-center py-12">
+        <p class="text-slate-600 dark:text-slate-400 text-lg">
+          No posts found with this tag.
+        </p>
+      </div>
+    )}
+  </div>
+</BaseLayout>

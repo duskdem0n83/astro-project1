@@ -1,0 +1,111 @@
+---
+---
+
+<div class="relative">
+  <input
+    type="search"
+    id="search-input"
+    placeholder="Search posts..."
+    class="px-4 py-2 pr-10 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 w-64"
+  />
+  <svg
+    class="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+    />
+  </svg>
+  <div
+    id="search-results"
+    class="hidden absolute top-full mt-2 w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg max-h-96 overflow-y-auto z-50"
+  ></div>
+</div>
+
+<script>
+  import { searchPosts } from '../utils/search';
+  import { getPosts } from '../utils/getPosts';
+
+  let allPosts: any[] = [];
+  let searchTimeout: number | null = null;
+
+  async function initSearch() {
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    const searchResults = document.getElementById('search-results');
+    
+    if (!searchInput || !searchResults) return;
+
+    // Load posts from the data attribute or window object
+    const postsData = document.querySelector('[data-posts]');
+    if (postsData) {
+      try {
+        const postsJson = postsData.getAttribute('data-posts');
+        if (postsJson) {
+          allPosts = JSON.parse(postsJson);
+        }
+      } catch (e) {
+        console.error('Failed to parse posts data', e);
+      }
+    } else if ((window as any).__BLOG_POSTS__) {
+      allPosts = (window as any).__BLOG_POSTS__;
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      const query = (e.target as HTMLInputElement).value.trim();
+      
+      if (searchTimeout) {
+        clearTimeout(searchTimeout);
+      }
+
+      searchTimeout = window.setTimeout(() => {
+        if (query.length === 0) {
+          searchResults.classList.add('hidden');
+          return;
+        }
+
+        const results = searchPosts(allPosts, query);
+        displayResults(results, searchResults);
+      }, 300);
+    });
+
+    // Close results when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!searchInput.contains(e.target as Node) && !searchResults.contains(e.target as Node)) {
+        searchResults.classList.add('hidden');
+      }
+    });
+  }
+
+  function displayResults(results: any[], container: HTMLElement) {
+    if (results.length === 0) {
+      container.innerHTML = '<div class="p-4 text-slate-600 dark:text-slate-400">No results found</div>';
+      container.classList.remove('hidden');
+      return;
+    }
+
+    container.innerHTML = results
+      .slice(0, 5)
+      .map(
+        (result) => `
+      <a href="/blog/${result.post.slug}" class="block p-4 hover:bg-slate-100 dark:hover:bg-slate-700 border-b border-slate-200 dark:border-slate-700 last:border-b-0">
+        <h3 class="font-semibold text-slate-900 dark:text-slate-100">${result.post.data.title}</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">${result.post.data.description}</p>
+      </a>
+    `
+      )
+      .join('');
+    container.classList.remove('hidden');
+  }
+
+  // Initialize search when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSearch);
+  } else {
+    initSearch();
+  }
+</script>

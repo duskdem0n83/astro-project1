@@ -1,0 +1,25 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BlogPost from './BlogPost.astro';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+}
+
+const { posts } = Astro.props;
+
+if (posts.length === 0) {
+  return null;
+}
+---
+
+<section class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
+  <h2 class="text-2xl font-bold mb-6 text-slate-900 dark:text-slate-100">
+    Related Posts
+  </h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {posts.map((post) => (
+      <BlogPost post={post} />
+    ))}
+  </div>
+</section>

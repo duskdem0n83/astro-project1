@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogPost from '../components/BlogPost.astro';
+import TagList from '../components/TagList.astro';
+import { getPosts, getAllTags } from '../utils/getPosts';
+
+const posts = await getPosts();
+const tags = getAllTags(posts);
+---
+
+<BaseLayout title="My Blog" description="A modern tech blog built with Astro">
+  <div class="container mx-auto px-4 py-8">
+    <header class="mb-8 text-center">
+      <h1 class="text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+        Welcome to My Blog
+      </h1>
+      <p class="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+        Exploring technology, programming, and cybersecurity through in-depth articles and tutorials.
+      </p>
+    </header>
+
+    <TagList tags={tags} />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      {posts.map((post) => (
+        <BlogPost post={post} />
+      ))}
+    </div>
+
+    {posts.length === 0 && (
+      <div class="text-center py-12">
+        <p class="text-slate-600 dark:text-slate-400 text-lg">
+          No posts yet. Check back soon!
+        </p>
+      </div>
+    )}
+  </div>
+
+  <script is:inline define:vars={{ postsJson: JSON.stringify(posts.map((p) => ({ slug: p.slug, data: p.data }))) }}>
+    // Make posts available for client-side search
+    const postsData = document.createElement('div');
+    postsData.setAttribute('data-posts', postsJson);
+    postsData.style.display = 'none';
+    document.body.appendChild(postsData);
+    
+    // Store posts in a way that SearchBar can access
+    if (typeof window !== 'undefined') {
+      try {
+        (window as any).__BLOG_POSTS__ = JSON.parse(postsJson);
+      } catch (e) {
+        console.error('Failed to parse posts', e);
+      }
+    }
+  </script>
+</BaseLayout>
