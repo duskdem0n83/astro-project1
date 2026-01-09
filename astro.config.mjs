@@ -6,7 +6,9 @@ import rehypePrettyCode from 'rehype-pretty-code';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://astro-project1-92iq8r9u7-dans-projects-c61e2af5.vercel.app',
+  site: process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}` 
+    : process.env.PUBLIC_SITE_URL || 'https://astro-project1.vercel.app',
   integrations: [
     tailwind({
       applyBaseStyles: false,
