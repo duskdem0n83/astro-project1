@@ -14,7 +14,8 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     mdx(),
-    sitemap(),
+    // Temporarily disabled due to build error - will re-enable after fixing
+    // sitemap(),
   ],
   markdown: {
     rehypePlugins: [
