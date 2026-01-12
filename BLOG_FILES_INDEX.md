@@ -7,11 +7,10 @@ This document lists all blog-related files in the Astro project.
 ### Blog Posts (Markdown)
 Location: `src/content/blog/`
 
-1. `mwcc-notes.md` - MWCC Notes blog post
-2. `osint-exercises-walkthrough.md` - OSINT Exercises Walkthrough
-3. `programming-languages-comparison.md` - Programming Languages Comparison (42 languages)
-4. `reverse-engineer-anti-debug2.md` - Reverse Engineer Anti-Debug 2
-5. `reverse-engineering-101.md` - Reverse Engineering 101
+1. `osint-exercises-walkthrough.md` - OSINT Exercises Walkthrough
+2. `programming-languages-comparison.md` - Programming Languages Comparison (42 languages)
+3. `reverse-engineer-anti-debug2.md` - Reverse Engineer Anti-Debug 2
+4. `reverse-engineering-101.md` - Reverse Engineering 101
 
 ### Content Configuration
 - `src/content/config.ts` - Content collection schema definition for blog posts
@@ -71,7 +70,6 @@ astro-project1/
 ├── src/
 │   ├── content/
 │   │   ├── blog/                    # Blog post markdown files
-│   │   │   ├── mwcc-notes.md
 │   │   │   ├── osint-exercises-walkthrough.md
 │   │   │   ├── programming-languages-comparison.md
 │   │   │   ├── reverse-engineer-anti-debug2.md
@@ -108,7 +106,7 @@ astro-project1/
 
 ## Total Blog-Related Files
 
-- **Blog Posts**: 5 markdown files
+- **Blog Posts**: 4 markdown files
 - **Layouts**: 2 files
 - **Pages**: 3 files (including RSS)
 - **Components**: 6 files
