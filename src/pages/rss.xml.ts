@@ -6,7 +6,7 @@ export async function GET(context: APIContext) {
   const posts = await getPosts();
   
   return rss({
-    title: 'My Blog',
+    title: 'My Bucking Blog',
     description: 'A modern tech blog built with Astro',
     site: context.site?.toString() || 'https://your-domain.vercel.app',
     items: posts.map((post) => ({
