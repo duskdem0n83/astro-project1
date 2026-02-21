@@ -8,7 +8,7 @@ tags:
   - comparison
   - development
   - guide
-author: Dan
+author: Daniel Buckman
 ---
 
 ## Introduction

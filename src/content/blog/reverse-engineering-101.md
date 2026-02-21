@@ -6,7 +6,7 @@ tags:
   - reverse-engineering
   - cybersecurity
   - assembly
-author: Dan
+author: Daniel Buckman
 ---
 
 ## Introduction

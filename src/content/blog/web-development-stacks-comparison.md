@@ -9,7 +9,7 @@ tags:
   - backend
   - frontend
   - guide
-author: Dan
+author: Daniel Buckman
 ---
 
 ## Introduction

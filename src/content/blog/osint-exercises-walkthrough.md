@@ -7,7 +7,7 @@ tags:
   - cybersecurity
   - geolocation
   - investigation
-author: Dan
+author: Daniel Buckman
 ---
 
 ## Introduction
